@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: 'https://card-admin.dev.intuaition.net/chart/data'
 };

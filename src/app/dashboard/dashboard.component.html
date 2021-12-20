@@ -1,0 +1,144 @@
+<div class="grid-container">
+  <h1 class="mat-h1">Dashboard</h1>
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-around center"
+    fxLayoutAlign.lt-md="center space-around">
+    <div *ngIf="data.length>1" fxFlex="100">
+      <mat-card class="dashboard-card">
+        <mat-card-content class="dashboard-card-content">
+
+          <mat-table [dataSource]="data">
+
+            <ng-container matColumnDef="keyword">
+              <mat-header-cell *matHeaderCellDef> Keywords </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.keyword}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="facebook">
+              <mat-header-cell *matHeaderCellDef fxLayout="row" fxLayoutAlign="center center"> Facebook
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div class="m-auto">
+                  <div class="m-1" fxLayout="row" fxLayoutAlign="center center"
+                    [style.width]="getDimValue(element.facebook)" [style.height]="getDimValue(element.facebook)"
+                    style="border-radius: 50%; background-color: #387cff;">
+                    <span>{{element.facebook|intTransform:1}} </span>
+                  </div>
+                </div>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="twitter">
+              <mat-header-cell *matHeaderCellDef fxLayout="row" fxLayoutAlign="center center"> Twitter
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div class="m-auto mt-1 mb-1" fxLayout="row" [style.width]="getDimValue(element.twitter)"
+                  [style.height]="getDimValue(element.twitter)" fxLayoutAlign="center center"
+                  style="border-radius: 50%; background-color: #38cb8a;">
+                  <span>{{element.twitter|intTransform:1}} </span>
+                </div>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="youtube">
+              <mat-header-cell *matHeaderCellDef fxLayout="row" fxLayoutAlign="center center"> Youtube
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div class="m-auto" fxLayout="row" [style.width]="getDimValue(element.youtube)"
+                  [style.height]="getDimValue(element.youtube)" fxLayoutAlign="center center"
+                  style="border-radius: 50%; background-color: #ffab00;">
+                  <span>{{element.youtube|intTransform:1}} </span>
+                </div>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="instagram">
+              <mat-header-cell *matHeaderCellDef fxLayout="row" fxLayoutAlign="center center"> Instagram
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div class="m-auto m-1" fxLayout="row" fxLayoutAlign="center center"
+                  [style.width]="getDimValue(element.instagram)" [style.height]="getDimValue(element.instagram)"
+                  style="border-radius: 50%; background-color: #ffe500;">
+                  <span>{{element.instagram|intTransform:1}} </span>
+                </div>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="reddit">
+              <mat-header-cell *matHeaderCellDef fxLayout="row" fxLayoutAlign="center center"> Reddit </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div class="m-auto" fxLayout="row" [style.width]="getDimValue(element.reddit)"
+                  [style.height]="getDimValue(element.reddit)" fxLayoutAlign="center center"
+                  style="border-radius: 50%; background-color: #fd5949;">
+                  <span>{{element.reddit|intTransform:1}} </span>
+                </div>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="others">
+              <mat-header-cell *matHeaderCellDef fxLayout="row" fxLayoutAlign="center center"> Others </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div class="m-auto" fxLayout="row" [style.width]="getDimValue(element.others)"
+                  [style.height]="getDimValue(element.others)" fxLayoutAlign="center center"
+                  style="border-radius: 50%; background-color: #b8b8b8;">
+                  <span>{{element.others|intTransform:1}} </span>
+                </div>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="cols"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: cols;"></mat-row>
+          </mat-table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <mat-card class="dashboard-card mt-4" fxFlex="49" fxFlex.lt-md="100">
+      <mat-card-header>
+        <mat-card-title>
+          Line Chart
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="dashboard-card-content" *ngIf="donutChartData.length && showChart">
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <google-chart [type]="lineType" [data]="lineChartData" [columns]="cols" [options]="lineOptions"
+            style="width: 100%; height: 100%;" [dynamicResize]="true">
+            >
+          </google-chart>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="dashboard-card mt-4" fxFlex="49" fxFlex.lt-md="100" *ngIf="showChart">
+      <mat-card-header>
+        <mat-card-title>
+          Donut Chart
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="dashboard-card-content" *ngIf="donutChartData.length">
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <google-chart [type]="type" [data]="donutChartData" [options]="pieOptions" style="width: 100%; height: 100%;">
+          </google-chart>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+
+    <mat-card class="dashboard-card mt-4" fxFlex="100">
+      <mat-card-header>
+        <mat-card-title>
+          Stacket Column Chart
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="dashboard-card-content" *ngIf="donutChartData.length">
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <google-chart *ngIf="showChart" style="width: 100%; height: 100%;" [type]="columnType" [data]="lineChartData"
+            [columns]="cols" [options]="stackedColumnOptions">
+          </google-chart>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>
